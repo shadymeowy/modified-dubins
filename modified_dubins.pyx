@@ -483,7 +483,7 @@ cpdef bint generate_quad(double[:] t, double[:] out, quad q):
     cdef int i
     if t.shape[0] > out.shape[0] or q.t[0] == q.t[1] == 0:
         return False
-    for i in range(len(t)):
+    for i in range(t.shape[0]):
         if t[i] < q.t[0]:
             out[i] = q.a[0][0]+t[i]*(q.a[0][1]+t[i]*q.a[0][2])
         elif t[i] > q.t[1]:
