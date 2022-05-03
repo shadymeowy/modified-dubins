@@ -1,8 +1,7 @@
 from distutils.core import setup, Extension
 from Cython.Distutils import build_ext
-import numpy
 
-cc_flags = ['-O3', '-ffast-math', '-march=native', '-mtune=native']
+cc_flags = ['-O3', '-march=native', '-mtune=native']
 
 setup(
     cmdclass={'build_ext': build_ext},
