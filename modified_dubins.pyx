@@ -99,6 +99,7 @@ cdef inline double angle(double[3] v1, double[3] v2, double[3] n):
     r += 2*M_PI if r < 0 else 0
     return r
 
+@cython.cdivision(True)
 cpdef dubins_paths dubins(dubins_args args):
     cdef:
         dubins_paths paths
@@ -128,6 +129,7 @@ cpdef dubins_paths dubins(dubins_args args):
     cross(n, args.target_direction, vt)
     normalize(vt, vt)
     
+    # TODO need a check for degenerate cases
     args.r /= dot(args.e_z, n)
     
     mul_v(vp, args.r, r_pl)
