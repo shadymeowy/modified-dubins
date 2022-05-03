@@ -80,6 +80,11 @@ cdef inline void normalize(double[3] v, double[3] o) nogil:
     cdef double l = norm(v)
     div_v(v, l, o)
 
+cdef inline void negate_v(double[3] v, double[3] o) nogil:
+    o[0] = -v[0]
+    o[1] = -v[1]
+    o[2] = -v[2]
+
 cdef inline void cross(double[3] a, double[3] b, double[3] o) nogil:
     o[0] = a[1]*b[2]-a[2]*b[1]
     o[1] = a[2]*b[0]-a[0]*b[2]
@@ -158,9 +163,9 @@ cpdef dubins_paths dubins(dubins_args args):
     normalize(path.v_t, path.v_t)
 
     path.theta_p = angle(path.v_t, vp, n)
-    mul_v(n, -1, n)
+    negate_v(n, n)
     path.theta_t = angle(path.v_t, vt, n)
-    mul_v(n, -1, n)
+    negate_v(n, n)
 
     mul_v(path.v_t, args.r, path.l1)
     add_v(r_pr, path.l1, path.l1)
@@ -198,7 +203,7 @@ cpdef dubins_paths dubins(dubins_args args):
     add_v(r_tl, path.l2, path.l2)
 
     path.cost = args.r * (abs(path.theta_p)+abs(path.theta_t)) + L
-    mul_v(path.v_t, -1, path.v_t)
+    negate_v(path.v_t, path.v_t)
     
     if isfinite(path.cost):
         paths.paths[paths.count] = path
@@ -207,7 +212,7 @@ cpdef dubins_paths dubins(dubins_args args):
     # LSL
     path.type = DUBINS_PATH_TYPE.LSL
     path.v_p = vp
-    mul_v(path.v_p, -1, path.v_p)
+    negate_v(path.v_p, path.v_p)
     path.r_p = r_pl
     path.r_t = r_tl
 
@@ -216,14 +221,14 @@ cpdef dubins_paths dubins(dubins_args args):
     cross(v, n, path.v_t)
     normalize(path.v_t, path.v_t)
 
-    mul_v(vp, -1, vp)
-    mul_v(n, -1, n)
+    negate_v(vp, vp)
+    negate_v(n, n)
     path.theta_p = -angle(path.v_t, vp, n)
-    mul_v(n, -1, n)
-    mul_v(vp, -1, vp)
-    mul_v(vt, -1, vt)
+    negate_v(n, n)
+    negate_v(vp, vp)
+    negate_v(vt, vt)
     path.theta_t = -angle(path.v_t, vt, n)
-    mul_v(vt, -1, vt)
+    negate_v(vt, vt)
 
     mul_v(path.v_t, args.r, path.l1)
     add_v(r_pl, path.l1, path.l1)
@@ -239,7 +244,7 @@ cpdef dubins_paths dubins(dubins_args args):
     # LSR
     path.type = DUBINS_PATH_TYPE.LSR
     path.v_p = vp
-    mul_v(path.v_p, -1, path.v_p)
+    negate_v(path.v_p, path.v_p)
     path.r_p = r_pl
     path.r_t = r_tr
 
@@ -253,14 +258,14 @@ cpdef dubins_paths dubins(dubins_args args):
     add_v(path.v_t, t, path.v_t)
     normalize(path.v_t, path.v_t)
 
-    mul_v(n, -1, n)
-    mul_v(vp, -1, vp)
+    negate_v(n, n)
+    negate_v(vp, vp)
     path.theta_p = -angle(path.v_t, vp, n)
-    mul_v(vp, -1, vp)
-    mul_v(path.v_t, -1, path.v_t)
+    negate_v(vp, vp)
+    negate_v(path.v_t, path.v_t)
     path.theta_t = angle(path.v_t, vt, n)
-    mul_v(path.v_t, -1, path.v_t)
-    mul_v(n, -1, n)
+    negate_v(path.v_t, path.v_t)
+    negate_v(n, n)
 
     mul_v(path.v_t, args.r, path.l1)
     add_v(r_pl, path.l1, path.l1)
@@ -268,7 +273,7 @@ cpdef dubins_paths dubins(dubins_args args):
     add_v(r_tr, path.l2, path.l2)
 
     path.cost = args.r * (abs(path.theta_p)+abs(path.theta_t)) + L
-    mul_v(path.v_t, -1, path.v_t)
+    negate_v(path.v_t, path.v_t)
     
     if isfinite(path.cost):
         paths.paths[paths.count] = path
@@ -296,13 +301,13 @@ cpdef dubins_paths dubins(dubins_args args):
     add_v(path.r_c, r_pr, path.r_c)
 
     path.theta_p = angle(path.v_c, vp, n)
-    mul_v(n, -1, n)
+    negate_v(n, n)
     path.theta_t = angle(path.v_t, vt, n)
-    mul_v(n, -1, n)
+    negate_v(n, n)
     path.theta_c = -angle(path.v_c, path.v_t, n)
 
     path.cost = args.r * (abs(path.theta_p)+abs(path.theta_t)+abs(path.theta_c))
-    mul_v(path.v_c, -1, path.v_c)
+    negate_v(path.v_c, path.v_c)
     
     if isfinite(path.cost):
         paths.paths[paths.count] = path
@@ -329,21 +334,21 @@ cpdef dubins_paths dubins(dubins_args args):
     mul_v(path.v_c, 2*args.r, path.r_c)
     add_v(path.r_c, r_pl, path.r_c)
 
-    mul_v(n, -1, n)
-    mul_v(vp, -1, vp)
+    negate_v(n, n)
+    negate_v(vp, vp)
     path.theta_p = -angle(path.v_c, vp, n)
-    mul_v(vp, -1, vp)
-    mul_v(n, -1, n)
-    mul_v(vt, -1, vt)
+    negate_v(vp, vp)
+    negate_v(n, n)
+    negate_v(vt, vt)
     path.theta_t = -angle(path.v_t, vt, n)
-    mul_v(vt, -1, vt)
-    mul_v(n, -1, n)
+    negate_v(vt, vt)
+    negate_v(n, n)
     path.theta_c = angle(path.v_c, path.v_t, n)
-    mul_v(n, -1, n)
+    negate_v(n, n)
 
     path.cost = args.r * (abs(path.theta_p)+abs(path.theta_t)+abs(path.theta_c))
-    mul_v(path.v_c, -1, path.v_c)
-    mul_v(path.v_p, -1, path.v_p)
+    negate_v(path.v_c, path.v_c)
+    negate_v(path.v_p, path.v_p)
     
     if isfinite(path.cost):
         paths.paths[paths.count] = path
