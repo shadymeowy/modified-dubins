@@ -64,6 +64,7 @@ cdef inline void mul_v(double[3] a, double b, double[3] o):
     o[1] = a[1]*b
     o[2] = a[2]*b
 
+@cython.cdivision(True)
 cdef inline void div_v(double[3] a, double b, double[3] o):
     o[0] = a[0]/b
     o[1] = a[1]/b
