@@ -49,49 +49,49 @@ cdef:
         int count
         dubins_path[6] paths
 
-cdef inline void add_v(double[3] a, double[3] b, double[3] o):
+cdef inline void add_v(double[3] a, double[3] b, double[3] o) nogil:
     o[0] = a[0]+b[0]
     o[1] = a[1]+b[1]
     o[2] = a[2]+b[2]
 
-cdef inline void sub_v(double[3] a, double[3] b, double[3] o):
+cdef inline void sub_v(double[3] a, double[3] b, double[3] o) nogil:
     o[0] = a[0]-b[0]
     o[1] = a[1]-b[1]
     o[2] = a[2]-b[2]
 
-cdef inline void mul_v(double[3] a, double b, double[3] o):
+cdef inline void mul_v(double[3] a, double b, double[3] o) nogil:
     o[0] = a[0]*b
     o[1] = a[1]*b
     o[2] = a[2]*b
 
 @cython.cdivision(True)
-cdef inline void div_v(double[3] a, double b, double[3] o):
+cdef inline void div_v(double[3] a, double b, double[3] o) nogil:
     o[0] = a[0]/b
     o[1] = a[1]/b
     o[2] = a[2]/b
 
-cdef inline double dot(double[3] a, double[3] b):
+cdef inline double dot(double[3] a, double[3] b) nogil:
     return a[0]*b[0]+a[1]*b[1]+a[2]*b[2]
 
-cdef inline double norm(double[3] v):
+cdef inline double norm(double[3] v) nogil:
     return sqrt(dot(v, v))
 
-cdef inline void normalize(double[3] v, double[3] o):
+cdef inline void normalize(double[3] v, double[3] o) nogil:
     cdef double l = norm(v)
     div_v(v, l, o)
 
-cdef inline void cross(double[3] a, double[3] b, double[3] o):
+cdef inline void cross(double[3] a, double[3] b, double[3] o) nogil:
     o[0] = a[1]*b[2]-a[2]*b[1]
     o[1] = a[2]*b[0]-a[0]*b[2]
     o[2] = a[0]*b[1]-a[1]*b[0]
     
-cdef inline void cross3(double[3] v1, double[3] v2, double[3] o):
+cdef inline void cross3(double[3] v1, double[3] v2, double[3] o) nogil:
     cdef double[3] t
     # To be replaced with a simple expr
     cross(v1, v2, t)
     cross(v2, t, o)
 
-cdef inline double angle(double[3] v1, double[3] v2, double[3] n):
+cdef inline double angle(double[3] v1, double[3] v2, double[3] n) nogil:
     cdef double[3] t
     cross(v1, v2, t)
     # To be replaced with a branchless and approximated expr
