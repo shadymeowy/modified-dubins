@@ -14,11 +14,11 @@ modules = cythonize([
 ])
 
 setup(
-    name='modified-3d-dubins',
-    version='1.0',
+    name='modified-dubins',
+    version='1.0.0a1',
     description='A modified version of Dubin\'s path based on altitude modifications and vector algebra',
     author='Tolga Demirdal',
-    url='https://github.com/shadymeowy/modified-3d-dubins',
+    url='https://github.com/shadymeowy/modified-dubins',
     setup_requires=["cython"],
     install_requires=[],
     ext_modules=modules
