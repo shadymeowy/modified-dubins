@@ -104,6 +104,15 @@ cdef inline double angle(double[3] v1, double[3] v2, double[3] n) nogil:
     r += 2*M_PI if r < 0 else 0
     return r
 
+cpdef double find_angle(double x1, double y1, double z1, double x2, double y2, double z2):
+    cdef:
+        double[3] t
+        double[3] n = [0, 0, 1]
+        double[3] v1 = [x1, y1, z1]
+        double[3] v2 = [x2, y2, z2]
+    cross(v1, v2, t)
+    return atan2(dot(n, t), dot(v1, v2))
+
 @cython.cdivision(True)
 cpdef dubins_paths dubins(dubins_args args):
     cdef:
@@ -574,7 +583,7 @@ cpdef quad solve_quad(double delta_x, double acceleration, double m_0, double m_
     q.a[1][0] = x[30]
     q.a[1][1] = x[14]
     q.a[1][2] = x[28]
-    if 0<q.t[0]<q.t[1]<delta_x:
+    if 0<=q.t[0]<=q.t[1]<=delta_x:
         return q
     q.t[0] = x[38]
     q.t[1] = x[39]
@@ -598,7 +607,7 @@ cpdef quad solve_quad(double delta_x, double acceleration, double m_0, double m_
     q.a[1][0] = x[30]
     q.a[1][1] = x[14]
     q.a[1][2] = x[28]
-    if 0<q.t[0]<q.t[1]<delta_x:
+    if 0<=q.t[0]<=q.t[1]<=delta_x:
         return q
     q.t[0] = x[49]
     q.t[1] = x[50]
@@ -610,7 +619,7 @@ cpdef quad solve_quad(double delta_x, double acceleration, double m_0, double m_
     q.a[1][0] = x[55]
     q.a[1][1] = x[56]
     q.a[1][2] = x[27]
-    if 0<q.t[0]<q.t[1]<delta_x:
+    if 0<=q.t[0]<=q.t[1]<=delta_x:
         return q
     q.t[0] = x[50]
     q.t[1] = x[49]
@@ -622,7 +631,7 @@ cpdef quad solve_quad(double delta_x, double acceleration, double m_0, double m_
     q.a[1][0] = x[55]
     q.a[1][1] = x[56]
     q.a[1][2] = x[27]
-    if 0<q.t[0]<q.t[1]<delta_x:
+    if 0<=q.t[0]<=q.t[1]<=delta_x:
         return q
     q.t[0] = -x[57]*x[59]
     q.t[1] = x[59]*(x[20] - x[22] + x[3] + x[45])
@@ -634,7 +643,7 @@ cpdef quad solve_quad(double delta_x, double acceleration, double m_0, double m_
     q.a[1][0] = x[55]
     q.a[1][1] = x[56]
     q.a[1][2] = x[27]
-    if 0<q.t[0]<q.t[1]<delta_x:
+    if 0<=q.t[0]<=q.t[1]<=delta_x:
         return q
     q.t[0] = 0
     q.t[1] = 0
